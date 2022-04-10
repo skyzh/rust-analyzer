@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["crate_symbols",""],["index_resolve",""],["world_symbols",""]],"struct":[["LibraryRootsQuery",""],["LibrarySymbolsQuery",""],["LocalRootsQuery",""],["ModuleSymbolsQuery",""],["Query",""],["SymbolIndex",""],["SymbolsDatabaseGroupStorage__",""],["SymbolsDatabaseStorage","Representative struct for the query group."]],"trait":[["SymbolsDatabase",""]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ConstData",""],["FunctionData",""],["ImplData",""],["Macro2Data",""],["MacroRulesData",""],["ProcMacroData",""],["StaticData",""],["TraitData",""],["TypeAliasData",""]]});

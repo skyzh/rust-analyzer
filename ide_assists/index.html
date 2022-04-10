@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`assists` crate provides a bunch of code assists, also known as code actions (in LSP) or intentions (in IntelliJ)."><meta name="keywords" content="rust, rustlang, rust-lang, ide_assists"><title>ide_assists - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../normalize.css"><link rel="stylesheet" type="text/css" href="../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../dark.css" disabled><link rel="stylesheet" type="text/css" href="../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../storage.js"></script><script src="../crates.js"></script><script defer src="../main.js"></script>
+    <noscript><link rel="stylesheet" href="../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../favicon.svg"></head><body class="rustdoc mod crate"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../ide_assists/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"></h2>
+    </nav>
+    <nav class="sidebar"><a class="sidebar-logo" href="../ide_assists/index.html"><div class="logo-container"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></div>
+        </a><h2 class="location"><a href="#">Crate ide_assists</a></h2><div class="sidebar-elems"><div class="block"><ul><li class="version">Version 0.0.0</li><li><a id="all-types" href="all.html">All Items</a></li></div></ul><section><div class="block"><ul><li><a href="#modules">Modules</a></li><li><a href="#structs">Structs</a></li><li><a href="#enums">Enums</a></li><li><a href="#functions">Functions</a></li></ul></div></section><div id="sidebar-vars" data-name="ide_assists" data-ty="mod" data-relpath=""></div><script defer src="sidebar-items.js"></script></div></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../ide_assists/index.html"><img class="rust-logo" src="../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="main-heading">
+    <h1 class="fqn"><span class="in-band">Crate <a class="mod" href="#">ide_assists</a><button id="copy-path" onclick="copy_path(this)" title="Copy item path to clipboard"><img src="../clipboard.svg" width="19" height="18" alt="Copy item path"></button></span></h1><span class="out-of-band"><a class="srclink" href="../src/ide_assists/lib.rs.html#1-300">source</a> · <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">[<span class="inner">&#x2212;</span>]</a></span></div><details class="rustdoc-toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>assists</code> crate provides a bunch of code assists, also known as code actions
+(in LSP) or intentions (in IntelliJ).</p>
+<p>An assist is a micro-refactoring, which is automatically activated in
+certain context. For example, if the cursor is over <code>,</code>, a “swap <code>,</code>” assist
+becomes available.</p>
+<h3 id="assists-guidelines"><a href="#assists-guidelines">Assists Guidelines</a></h3>
+<p>Assists are the main mechanism to deliver advanced IDE features to the user,
+so we should pay extra attention to the UX.</p>
+<p>The power of assists comes from their context-awareness. The main problem
+with IDE features is that there are a lot of them, and it’s hard to teach
+the user what’s available. Assists solve this problem nicely: 💡 signifies
+that <em>something</em> is possible, and clicking on it reveals a <em>short</em> list of
+actions. Contrast it with Emacs <code>M-x</code>, which just spits an infinite list of
+all the features.</p>
+<p>Here are some considerations when creating a new assist:</p>
+<ul>
+<li>It’s good to preserve semantics, and it’s good to keep the code compiling,
+but it isn’t necessary. Example: “flip binary operation” might change
+semantics.</li>
+<li>Assist shouldn’t necessary make the code “better”. A lot of assist come in
+pairs: “if let &lt;-&gt; match”.</li>
+<li>Assists should have as narrow scope as possible. Each new assists greatly
+improves UX for cases where the user actually invokes it, but it makes UX
+worse for every case where the user clicks 💡 to invoke some <em>other</em>
+assist. So, a rarely useful assist which is always applicable can be a net
+negative.</li>
+<li>Rarely useful actions are tricky. Sometimes there are features which are
+clearly useful to some users, but are just noise most of the time. We
+don’t have a good solution here, our current approach is to make this
+functionality available only if assist is applicable to the whole
+selection. Example: <code>sort_items</code> sorts items alphabetically. Naively, it
+should be available more or less everywhere, which isn’t useful. So
+instead we only show it if the user <em>selects</em> the items they want to sort.</li>
+<li>Consider grouping related assists together (see [<code>Assists::add_group</code>]).</li>
+<li>Make assists robust. If the assist depends on results of type-inference to
+much, it might only fire in fully-correct code. This makes assist less
+useful and (worse) less predictable. The user should have a clear
+intuition when each particular assist is available.</li>
+<li>Make small assists, which compose. Example: rather than auto-importing
+enums in <code>add_missing_match_arms</code>, we use fully-qualified names. There’s a
+separate assist to shorten a fully-qualified name.</li>
+<li>Distinguish between assists and fixits for diagnostics. Internally, fixits
+and assists are equivalent. They have the same “show a list + invoke a
+single element” workflow, and both use <a href="struct.Assist.html" title="Assist"><code>Assist</code></a> data structure. The main
+difference is in the UX: while 💡 looks only at the cursor position,
+diagnostics squigglies and fixits are calculated for the whole file and
+are presented to the user eagerly. So, diagnostics should be fixable
+errors, while assists can be just suggestions for an alternative way to do
+something. If something <em>could</em> be a diagnostic, it should be a
+diagnostic. Conversely, it might be valuable to turn a diagnostic with a
+lot of false errors into an assist.</li>
+<li></li>
+</ul>
+<p>See also this post:
+<a href="https://rust-analyzer.github.io/blog/2020/09/28/how-to-make-a-light-bulb.html">https://rust-analyzer.github.io/blog/2020/09/28/how-to-make-a-light-bulb.html</a></p>
+</div></details><h2 id="modules" class="small-section-header"><a href="#modules">Modules</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="mod" href="utils/index.html" title="ide_assists::utils mod">utils</a></div><div class="item-right docblock-short"><p>Assorted functions shared by several assists.</p>
+</div></div></div><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Assist.html" title="ide_assists::Assist struct">Assist</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AssistConfig.html" title="ide_assists::AssistConfig struct">AssistConfig</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.AssistId.html" title="ide_assists::AssistId struct">AssistId</a></div><div class="item-right docblock-short"><p>Unique identifier of the assist, should not be shown to the user
+directly.</p>
+</div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.GroupLabel.html" title="ide_assists::GroupLabel struct">GroupLabel</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.SingleResolve.html" title="ide_assists::SingleResolve struct">SingleResolve</a></div><div class="item-right docblock-short"><p>Hold the <a href="struct.AssistId.html" title="AssistId"><code>AssistId</code></a> data of a certain assist to resolve.
+The original id object cannot be used due to a <code>'static</code> lifetime
+and the requirement to construct this struct dynamically during the resolve handling.</p>
+</div></div></div><h2 id="enums" class="small-section-header"><a href="#enums">Enums</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.AssistKind.html" title="ide_assists::AssistKind enum">AssistKind</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="enum" href="enum.AssistResolveStrategy.html" title="ide_assists::AssistResolveStrategy enum">AssistResolveStrategy</a></div><div class="item-right docblock-short"><p>A way to control how many asssist to resolve during the assist resolution.
+When an assist is resolved, its edits are calculated that might be costly to always do by default.</p>
+</div></div></div><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="fn" href="fn.assists.html" title="ide_assists::assists fn">assists</a></div><div class="item-right docblock-short"><p>Return all the assists applicable at the given position.</p>
+</div></div></div></section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../" data-current-crate="ide_assists" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.60.0 (7737e0b5c 2022-04-04)" ></div>
+</body></html>

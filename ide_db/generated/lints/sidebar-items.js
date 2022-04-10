@@ -1,0 +1,1 @@
+initSidebarItems({"constant":[["CLIPPY_LINTS",""],["CLIPPY_LINT_GROUPS",""],["DEFAULT_LINTS",""],["DEFAULT_LINT_GROUPS",""],["FEATURES",""],["RUSTDOC_LINTS",""],["RUSTDOC_LINT_GROUPS",""]],"struct":[["Lint",""],["LintGroup",""]]});

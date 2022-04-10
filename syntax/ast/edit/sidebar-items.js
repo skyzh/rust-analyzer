@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["IndentLevel",""]],"trait":[["AstNodeEdit","Soft-deprecated in favor of mutable tree editing API `edit_in_place::Ident`."]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["NonEmptyVec","A [`Vec`] that is guaranteed to at least contain one element."]]});

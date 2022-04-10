@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["ModuleOrigin",""],["ModuleSource",""]],"mod":[["attr_resolution","Post-nameres attribute resolution."],["diagnostics","Diagnostics emitted during DefMap construction."]],"struct":[["DefMap","Contains the results of (early) name resolution."],["ModuleData",""]]});

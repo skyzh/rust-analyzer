@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["default_bool",""],["empty_block_expr",""],["empty_char",""],["empty_str",""],["expr_todo",""],["expr_ty_default",""],["expr_ty_new",""],["expr_unreachable",""],["field_from_idents",""],["ident_path",""],["path_from_idents",""],["simple_ident_pat",""],["ty_bool",""],["ty_option",""],["ty_result",""],["zero_float",""],["zero_number",""]]});
